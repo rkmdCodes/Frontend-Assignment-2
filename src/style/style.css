@@ -1,0 +1,86 @@
+.searchBox {
+  height: 3rem;
+  width: 100vw;
+}
+
+th,
+td {
+
+  width: 20vw;
+  height: 3.1rem;
+  font-size: 18px;
+  text-align: left;
+}
+
+td {
+  color: rgb(11, 10, 10);
+}
+
+.logo {
+  height: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0.8rem;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100vw;
+ 
+  /* border: 7px solid green; */
+ 
+}
+
+.footer-pagination-buttons {
+  display: flex;
+  /* border: 2px solid red; */
+}
+
+.pagination-control-icon {
+  margin-top: 15px;
+  margin-left: 1rem;
+  background-color: skyblue;
+  border-radius: 14px;
+  border: 0px;
+  height: 2rem;
+  width: 2rem;
+}
+
+.inside-contaier {
+  display: flex;
+  /* border: 2px solid green; */
+}
+
+.inside-buttons-container {
+  display: flex;
+  justify-content: center;
+  /* border: 2px solid blue; */
+  width: 15rem;
+}
+
+.button {
+  border-radius: 20px;
+  margin-left: 10px;
+  background-color: rgb(243, 57, 57);
+  height: 2rem;
+  width: 130px;
+  color: #ffffff;
+  border: 0px;
+  padding: 1px 1px 1px 1px;
+  margin-top: 15px;
+}
+
+.last {
+  display: none;
+}
+
+
+/* @media (max-width: 768px) {
+  .footer-container,
+  .inside-container,
+  .footer-pagination-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+} */
+
