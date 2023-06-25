@@ -2,6 +2,7 @@ import React from 'react';
 import Search from '../component/searchBox';
 import Table from '../component/dataTable';
 
+
 const Home = () => {
   return (
     <>

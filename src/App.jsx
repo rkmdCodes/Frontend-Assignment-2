@@ -1,12 +1,13 @@
 import React from "react";
-import Home  from "./pages/Home";
+import Home from "./pages/Home";
+import DataProvider from "./contex/DataProvider";
 
-const App = ()=>{
-
+const App = () => {
   return (
-    <Home/>
-  )
-
-}
+    <DataProvider>
+      <Home />
+    </DataProvider>
+  );
+};
 
 export default App;

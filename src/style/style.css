@@ -1,6 +1,8 @@
 .searchBox {
   height: 3rem;
-  width: 100vw;
+  width: 80vw;
+  margin-left: 10%;
+  
 }
 
 th,
@@ -10,11 +12,19 @@ td {
   height: 3.1rem;
   font-size: 18px;
   text-align: left;
+  transition: all 0.4s ease;
+;
 }
 
-td {
-  color: rgb(11, 10, 10);
+tr:hover{
+  background-color: rgba(128, 128, 128, 128);
+  color:white !important;
+  transition:0.6s ease;
+  transform: scale(1.004) translateZ(0);
+  
 }
+
+
 
 .logo {
   height: 1.5rem;
@@ -57,7 +67,10 @@ td {
   /* border: 2px solid blue; */
   width: 15rem;
 }
-
+table{
+  width:80vw;
+  margin-left: 10%;
+}
 .button {
   border-radius: 20px;
   margin-left: 10px;

@@ -1,6 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import axios from "axios";
-import { handleDelete, handleChecked, selectAll } from "../utils/utility";
+import { DataContext } from "../contex/DataProvider";
+import {
+  handleDelete,
+  handleSelectAll,
+  handleCheckboxChange,
+  handleEdit,
+  handleCancel,
+  handleSave,
+} from "../utils/utility";
 import delIcon from "../assets/delete.png";
 import editIcon from "../assets/edit.png";
 import saveIcon from "../assets/save.png";
@@ -8,13 +16,18 @@ import Footer from "./footer";
 import "../style/style.css";
 
 const Table = () => {
-  const [dataArray, setDataArray] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [page, setPage] = useState([0, 10]);
-  const [select, setSelect] = useState([]);
-  const [selectAllChecked, setSelectAllChecked] = useState(false);
-  const [editMode, setEditMode] = useState({});
-  
+  const { dataArray } = useContext(DataContext);
+  const { setDataArray } = useContext(DataContext);
+  const { searchTerm } = useContext(DataContext);
+  const { page } = useContext(DataContext);
+  const { setPage } = useContext(DataContext);
+  const { select } = useContext(DataContext);
+  const { setSelect } = useContext(DataContext);
+  const { selectAllChecked } = useContext(DataContext);
+  const { setSelectAllChecked } = useContext(DataContext);
+  const { editMode } = useContext(DataContext);
+  const { setEditMode } = useContext(DataContext);
+
   let styleObject = {};
 
   useEffect(() => {
@@ -31,58 +44,6 @@ const Table = () => {
     fetchData();
   }, []);
 
-  const handleSearch = (event) => {
-    const searchTerm = event.target.value.toLowerCase();
-    setSearchTerm(searchTerm);
-  };
-
-  const handleSelectAll = (event) => {
-    const checked = event.target.checked;
-    setSelectAllChecked(checked);
-
-    if (checked) {
-      const currentPageData = dataArray.slice(page[0], page[1]);
-      const currentPageIds = currentPageData.map((item) => item.id);
-      setSelect([...select, ...currentPageIds]);
-    } else {
-      const currentPageData = dataArray.slice(page[0], page[1]);
-      const currentPageIds = currentPageData.map((item) => item.id);
-      setSelect(select.filter((item) => !currentPageIds.includes(item)));
-    }
-  };
-
-  const handleCheckboxChange = (event, id) => {
-    const checked = event.target.checked;
-
-    if (checked) {
-      setSelect([...select, id]);
-    } else {
-      setSelect(select.filter((item) => item !== id));
-    }
-  };
-
-  const handleEdit = (id) => {
-    setEditMode((prevEditMode) => ({ ...prevEditMode, [id]: true }));
-  };
-
-  const handleSave = (id, field, value) => {
-    const updatedDataArray = dataArray.map((item) => {
-      if (item.id === id) {
-        return {
-          ...item,
-          [field]: value,
-        };
-      }
-      return item;
-    });
-
-    setDataArray(updatedDataArray);
-  };
-
-  const handleCancel = (id) => {
-    setEditMode((prevEditMode) => ({ ...prevEditMode, [id]: false }));
-  };
-
   const filteredData = dataArray.filter(
     (item) =>
       item.name.toLowerCase().includes(searchTerm) ||
@@ -94,12 +55,6 @@ const Table = () => {
 
   return (
     <>
-      <input
-        className="searchBox"
-        type="text"
-        onChange={handleSearch}
-        placeholder="search by email, name, or role..."
-      />
       <table>
         <thead>
           <tr>
@@ -107,7 +62,16 @@ const Table = () => {
               <input
                 type="checkbox"
                 checked={selectAllChecked}
-                onChange={handleSelectAll}
+                onChange={(event) =>
+                  handleSelectAll(
+                    event,
+                    dataArray,
+                    page,
+                    select,
+                    setSelect,
+                    setSelectAllChecked
+                  )
+                }
               />
             </th>
             <th>Name</th>
@@ -122,15 +86,15 @@ const Table = () => {
             const isChecked = select.includes(data.id);
             if (select.includes(data.id)) {
               styleObject = {
-                backgroundColor: "rgba(128, 128, 128, 0.5)",
-                color: "black",
-                'transition': 'all 0.4s ease',
-                transform: 'scale(1.004)'
+                backgroundColor: "rgba(128, 128, 128, 128)",
+                color: "white",
+                transition: "background-color 0.6s ease, transform 0.4s ease",
               };
-             
             } else {
-              styleObject = {'transition': 'all 0.4s ease',};
-            
+              styleObject = {
+                transition: "background-color 0.6s ease",
+                color: "black",
+              };
             }
             return (
               <tr key={data.id} style={styleObject}>
@@ -139,7 +103,7 @@ const Table = () => {
                     type="checkbox"
                     checked={isChecked}
                     onChange={(event) =>
-                      handleCheckboxChange(event, data.id)
+                      handleCheckboxChange(event, data.id, select, setSelect)
                     }
                   />
                 </td>
@@ -149,7 +113,13 @@ const Table = () => {
                       type="text"
                       value={data.name}
                       onChange={(event) =>
-                        handleSave(data.id, "name", event.target.value)
+                        handleSave(
+                          data.id,
+                          "name",
+                          event.target.value,
+                          dataArray,
+                          setDataArray
+                        )
                       }
                     />
                   ) : (
@@ -162,8 +132,13 @@ const Table = () => {
                       type="text"
                       value={data.email}
                       onChange={(event) =>
-                        handleSave(data.id, "email", event.target.value)
-                        
+                        handleSave(
+                          data.id,
+                          "email",
+                          event.target.value,
+                          dataArray,
+                          setDataArray
+                        )
                       }
                     />
                   ) : (
@@ -176,8 +151,13 @@ const Table = () => {
                       type="text"
                       value={data.role}
                       onChange={(event) =>
-                        handleSave(data.id, "role", event.target.value)
-                        
+                        handleSave(
+                          data.id,
+                          "role",
+                          event.target.value,
+                          dataArray,
+                          setDataArray
+                        )
                       }
                     />
                   ) : (
@@ -191,14 +171,22 @@ const Table = () => {
                         className="logo"
                         src={saveIcon}
                         alt="Save"
-                        onClick={() => handleCancel(data.id)}
-                       
+                        onClick={() => handleCancel(data.id, setEditMode)}
                       />
                       <img
                         className="logo"
                         src={delIcon}
                         alt="Cancel"
-                        onClick={() => handleSave(data.id, data.name, data.email, data.role)}
+                        onClick={() =>
+                          handleSave(
+                            data.id,
+                            data.name,
+                            data.email,
+                            data.role,
+                            dataArray,
+                            setDataArray
+                          )
+                        }
                       />
                     </>
                   ) : (
@@ -207,7 +195,7 @@ const Table = () => {
                         className="logo"
                         src={editIcon}
                         alt="Edit"
-                        onClick={() => handleEdit(data.id)}
+                        onClick={() => handleEdit(data.id, setEditMode)}
                       />
                       <img
                         className="logo"
