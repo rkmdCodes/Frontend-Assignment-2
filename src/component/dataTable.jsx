@@ -3,6 +3,7 @@ import axios from "axios";
 import { handleDelete, handleChecked, selectAll } from "../utils/utility";
 import delIcon from "../assets/delete.png";
 import editIcon from "../assets/edit.png";
+import saveIcon from "../assets/save.png";
 import Footer from "./footer";
 import "../style/style.css";
 
@@ -13,9 +14,8 @@ const Table = () => {
   const [select, setSelect] = useState([]);
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [editMode, setEditMode] = useState({});
-
+  
   let styleObject = {};
-  let checkedCheck = false;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,16 +65,18 @@ const Table = () => {
     setEditMode((prevEditMode) => ({ ...prevEditMode, [id]: true }));
   };
 
-  const handleSave = (id, name, email, role) => {
+  const handleSave = (id, field, value) => {
     const updatedDataArray = dataArray.map((item) => {
       if (item.id === id) {
-        return { ...item, name, email, role };
+        return {
+          ...item,
+          [field]: value,
+        };
       }
       return item;
     });
 
     setDataArray(updatedDataArray);
-    setEditMode((prevEditMode) => ({ ...prevEditMode, [id]: false }));
   };
 
   const handleCancel = (id) => {
@@ -147,7 +149,7 @@ const Table = () => {
                       type="text"
                       value={data.name}
                       onChange={(event) =>
-                        handleSave(data.id, event.target.value, data.email, data.role)
+                        handleSave(data.id, "name", event.target.value)
                       }
                     />
                   ) : (
@@ -160,7 +162,8 @@ const Table = () => {
                       type="text"
                       value={data.email}
                       onChange={(event) =>
-                        handleSave(data.id, data.name, event.target.value, data.role)
+                        handleSave(data.id, "email", event.target.value)
+                        
                       }
                     />
                   ) : (
@@ -173,7 +176,8 @@ const Table = () => {
                       type="text"
                       value={data.role}
                       onChange={(event) =>
-                        handleSave(data.id, data.name, data.email, event.target.value)
+                        handleSave(data.id, "role", event.target.value)
+                        
                       }
                     />
                   ) : (
@@ -185,15 +189,16 @@ const Table = () => {
                     <>
                       <img
                         className="logo"
-                        src={delIcon}
+                        src={saveIcon}
                         alt="Save"
-                        onClick={() => handleSave(data.id, data.name, data.email, data.role)}
+                        onClick={() => handleCancel(data.id)}
+                       
                       />
                       <img
                         className="logo"
                         src={delIcon}
                         alt="Cancel"
-                        onClick={() => handleCancel(data.id)}
+                        onClick={() => handleSave(data.id, data.name, data.email, data.role)}
                       />
                     </>
                   ) : (
