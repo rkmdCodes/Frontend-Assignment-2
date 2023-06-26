@@ -1,6 +1,6 @@
 import React from "react";
-import Search from "../component/SearchBox";
-import Table from "../component/DataTable";
+import Search from "../component/searchBox";
+import Table from "../component/dataTable";
 import Header from "../component/Header";
 import Footer from "../component/Footer";
 import "../style/style.css";
