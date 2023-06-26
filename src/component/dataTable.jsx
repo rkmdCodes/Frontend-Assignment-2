@@ -8,11 +8,12 @@ import {
   handleEdit,
   handleCancel,
   handleSave,
+
 } from "../utils/utility";
 import delIcon from "../assets/delete.png";
 import editIcon from "../assets/edit.png";
 import saveIcon from "../assets/save.png";
-import Footer from "./footer";
+import Footer from "./Footer";
 import "../style/style.css";
 
 const Table = () => {
@@ -20,7 +21,8 @@ const Table = () => {
   const { setDataArray } = useContext(DataContext);
   const { searchTerm } = useContext(DataContext);
   const { page } = useContext(DataContext);
-  const { setPage } = useContext(DataContext);
+  const { setButtonCount } = useContext(DataContext);
+  const { buttonCount } = useContext(DataContext);
   const { select } = useContext(DataContext);
   const { setSelect } = useContext(DataContext);
   const { selectAllChecked } = useContext(DataContext);
@@ -50,6 +52,12 @@ const Table = () => {
       item.email.toLowerCase().includes(searchTerm) ||
       item.role.toLowerCase().includes(searchTerm)
   );
+  
+  useEffect(()=>{
+    setButtonCount(filteredData.length)
+  },[filteredData])
+
+
 
   const currentPageData = filteredData.slice(page[0], page[1]);
 
@@ -81,7 +89,7 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-          {currentPageData.map((data) => {
+          {currentPageData.length !== 0 ? currentPageData.map((data) => {
             const inEditMode = editMode[data.id];
             const isChecked = select.includes(data.id);
             if (select.includes(data.id)) {
@@ -210,17 +218,12 @@ const Table = () => {
                 </td>
               </tr>
             );
-          })}
+          })
+          :
+           <h2 className="not-found">No results found</h2>
+        }
         </tbody>
       </table>
-      <Footer
-        select={select}
-        dataArray={filteredData}
-        setDataArray={setDataArray}
-        setSelect={setSelect}
-        page={page}
-        setPage={setPage}
-      />
     </>
   );
 };

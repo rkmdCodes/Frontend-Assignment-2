@@ -1,9 +1,8 @@
-
 export function handleDelete(id, dataArray, setDataArray) {
   setDataArray([...dataArray.filter((element, index) => element.id !== id)]);
 }
 
-export const handleSearch = (event) => {
+export const handleSearch = (event, dataArray, setDataArray) => {
   const searchTerm = event.target.value.toLowerCase();
   setSearchTerm(searchTerm);
 };
@@ -12,18 +11,26 @@ export function deleteSelected(
   select,
   dataArray,
   setDataArray,
-  setSelect,
- 
+  selectAllChecked,
+  setSelectAllChecked,
+  setSelect
 ) {
-  if ( select.length > 0 && confirm("Selected Rows will be deleted")) {
+  if (select.length > 0 && confirm("Selected Rows will be deleted")) {
     setDataArray([...dataArray.filter((value) => !select.includes(value.id))]);
+    if(selectAllChecked)
+       setSelectAllChecked(!selectAllChecked);
     setSelect([]);
-  }
-  else
-    alert("Nothing is seleted....Please select something to delete!")
+  } else alert("Nothing is seleted....Please select something to delete!");
 }
 
-export  const handleSelectAll = (event,dataArray,page,select,setSelect,setSelectAllChecked) => {
+export const handleSelectAll = (
+  event,
+  dataArray,
+  page,
+  select,
+  setSelect,
+  setSelectAllChecked
+) => {
   const checked = event.target.checked;
   setSelectAllChecked(checked);
 
@@ -38,7 +45,7 @@ export  const handleSelectAll = (event,dataArray,page,select,setSelect,setSelect
   }
 };
 
-export const handleCheckboxChange = (event, id , select , setSelect) => {
+export const handleCheckboxChange = (event, id, select, setSelect) => {
   const checked = event.target.checked;
 
   if (checked) {
@@ -48,15 +55,15 @@ export const handleCheckboxChange = (event, id , select , setSelect) => {
   }
 };
 
-export const handleEdit = (id,setEditMode) => {
+export const handleEdit = (id, setEditMode) => {
   setEditMode((prevEditMode) => ({ ...prevEditMode, [id]: true }));
 };
 
-export const handleCancel = (id,setEditMode) => {
+export const handleCancel = (id, setEditMode) => {
   setEditMode((prevEditMode) => ({ ...prevEditMode, [id]: false }));
 };
 
-export const handleSave = (id, field, value ,dataArray ,setDataArray ) => {
+export const handleSave = (id, field, value, dataArray, setDataArray) => {
   const updatedDataArray = dataArray.map((item) => {
     if (item.id === id) {
       return {

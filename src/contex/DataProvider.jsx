@@ -5,6 +5,7 @@ export const DataContext = createContext(null);
 const DataProvider = ({children})=>{
 
     const [dataArray, setDataArray] = useState([]);
+    const [buttonCount, setButtonCount] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [page, setPage] = useState([0, 10]);
     const [select, setSelect] = useState([]);
@@ -25,7 +26,9 @@ const DataProvider = ({children})=>{
             selectAllChecked,
             setSelectAllChecked,
             editMode,
-            setEditMode 
+            setEditMode,
+            buttonCount,
+            setButtonCount 
         }}>
         {children}
         </DataContext.Provider>
