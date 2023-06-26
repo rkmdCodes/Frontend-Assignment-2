@@ -12,27 +12,31 @@ function paginationButtonControl(event, page, setPage , setClickedButton) {
   setPage([event.target.value * 10 - 10, event.target.value * 10]);
 }
 
-function handleNextPageClick(page, dataArray, setPage) {
-  if (page[0] + 10 < dataArray.length) {
+function handleNextPageClick(page, buttonCount, setPage,clickedButton,setClickedButton) {
+  if (page[0] + 10 < buttonCount) {
     setPage([page[0] + 10, page[1] + 10]);
+    setClickedButton(clickedButton+1)
   }
 }
 
-function handlePrevPageClick(page, dataArray, setPage) {
-  if (page[0] - 10 >= 0 && page[0] - 10 <= dataArray.length) {
+function handlePrevPageClick(page, buttonCount, setPage,clickedButton,setClickedButton) {
+  if (page[0] - 10 >= 0 && page[0] - 10 <= buttonCount) {
     setPage([page[0] - 10, page[1] - 10]);
+    setClickedButton(clickedButton-1);
   }
 }
 
-function handleFirstPageJumpClick(page, setPage) {
+function handleFirstPageJumpClick(page, setPage ,setClickedButton) {
   setPage([0, 10]);
+  setClickedButton(1)
 }
 
-function handleLastPageJumpClick(dataArray, page, setPage) {
+function handleLastPageJumpClick(dataArray, page, setPage,buttonCount , setClickedButton) {
   setPage([
-    parseInt(dataArray.length / 10) * 10,
-    parseInt(dataArray.length / 10) * 10 + 10,
+    parseInt(buttonCount / 10) * 10,
+    parseInt(buttonCount / 10) * 10 + 10,
   ]);
+  setClickedButton(Math.ceil(buttonCount/10));
 }
 
 let dynammicStyle = {};
@@ -51,10 +55,25 @@ const Footer = () => {
 
 
 
+
   var buttons = [];
   for (let i = 1; i <= Math.ceil(buttonCount / 10); i++) {
     buttons.push(i);
   }
+  useEffect(()=>{
+
+    function updateButtons()
+    {
+      buttons =[];
+      for (let i = 1; i <= Math.ceil(buttonCount / 10); i++) {
+        buttons.push(i);
+      }
+    }
+    
+    updateButtons();
+  },[buttonCount])
+
+
 
 
   return (
@@ -82,7 +101,7 @@ const Footer = () => {
         <div className="footer-pagination-buttons">
           <div>
             <img
-              onClick={() => handleFirstPageJumpClick(page, setPage)}
+              onClick={() => handleFirstPageJumpClick(page, setPage,setClickedButton)}
               className="logo pagination-control-icon"
               src={First}
             />
@@ -90,7 +109,7 @@ const Footer = () => {
           <div className="inside-contaier">
             <div>
               <img
-                onClick={() => handlePrevPageClick(page, dataArray, setPage)}
+                onClick={() => handlePrevPageClick(page, buttonCount, setPage,clickedButton,setClickedButton)}
                 className="logo pagination-control-icon"
                 src={Prev}
               />
@@ -130,7 +149,7 @@ const Footer = () => {
             }
             <div>
               <img
-                onClick={() => handleNextPageClick(page, dataArray, setPage)}
+                onClick={() => handleNextPageClick(page, buttonCount, setPage,clickedButton,setClickedButton)}
                 className="logo pagination-control-icon"
                 src={Next}
               />
@@ -139,7 +158,7 @@ const Footer = () => {
 
           <div>
             <img
-              onClick={() => handleLastPageJumpClick(dataArray, page, setPage)}
+              onClick={() => handleLastPageJumpClick(buttonCount, page, setPage ,buttonCount , setClickedButton)}
               className="logo pagination-control-icon"
               src={Last}
             />
