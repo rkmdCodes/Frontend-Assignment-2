@@ -90,7 +90,7 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-          {currentPageData.length !== 0 ? currentPageData.map((data) => {
+          {currentPageData.length > 0 && currentPageData.map((data) => {
             const inEditMode = editMode[data.id];
             const isChecked = select.includes(data.id);
             if (select.includes(data.id)) {
@@ -206,11 +206,13 @@ const Table = () => {
               </tr>
             );
           })
-          :
-           <h2 className="not-found">No results found</h2>
+         
         }
         </tbody>
       </table>
+      <>
+         {currentPageData.length === 0 && <h2 className="not-found"> No Result Found</h2>}
+      </>
     </>
   );
 };
