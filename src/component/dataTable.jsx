@@ -14,7 +14,7 @@ import {
 import delIcon from "../assets/delete.png";
 import editIcon from "../assets/blue-edit.png";
 import saveIcon from "../assets/blue-save.png";
-import Footer from "./Footer";
+import Footer from "./footer";
 import "../style/style.css";
 
 const Table = () => {

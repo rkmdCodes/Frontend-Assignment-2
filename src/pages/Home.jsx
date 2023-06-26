@@ -1,8 +1,8 @@
 import React from "react";
 import Search from "../component/searchBox";
 import Table from "../component/dataTable";
-import Header from "../component/Header";
-import Footer from "../component/Footer";
+import Header from "../component/header";
+import Footer from "../component/footer";
 import "../style/style.css";
 
 const Home = () => {
