@@ -56,7 +56,6 @@ const Footer = () => {
     buttons.push(i);
   }
 
-  console.log("footer is rendering")
 
   return (
     <>
@@ -98,7 +97,7 @@ const Footer = () => {
             </div>
             {
               <div className="inside-buttons-container">
-                {buttons.map((butt,index) => {
+                {buttons.map((paginationButton,index) => {
                 
                   if(index === clickedButton-1)
                   {
@@ -116,15 +115,15 @@ const Footer = () => {
                       'color':'black'
                      }
                   return (<button
-                    key={butt}
-                    value={butt}
+                    key={paginationButton}
+                    value={paginationButton}
                     style={dynammicStyle}
                     onClick={(event) =>
                       paginationButtonControl(event, page, setPage , setClickedButton)
                     }
                     className="pagination-control-icon"
                   >
-                    {butt}
+                    {paginationButton}
                   </button>)
                   })}
               </div>

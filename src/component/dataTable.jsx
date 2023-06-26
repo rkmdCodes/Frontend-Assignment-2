@@ -8,11 +8,12 @@ import {
   handleEdit,
   handleCancel,
   handleSave,
+  convertStandard
 
 } from "../utils/utility";
 import delIcon from "../assets/delete.png";
-import editIcon from "../assets/edit.png";
-import saveIcon from "../assets/save.png";
+import editIcon from "../assets/blue-edit.png";
+import saveIcon from "../assets/blue-save.png";
 import Footer from "./Footer";
 import "../style/style.css";
 
@@ -94,7 +95,7 @@ const Table = () => {
             const isChecked = select.includes(data.id);
             if (select.includes(data.id)) {
               styleObject = {
-                backgroundColor: "rgba(128, 128, 128, 128)",
+                backgroundColor: "rgb(37, 37, 39)",
                 color: "white",
                 transition: "background-color 0.6s ease, transform 0.4s ease",
               };
@@ -169,7 +170,7 @@ const Table = () => {
                       }
                     />
                   ) : (
-                    data.role
+                    convertStandard(data.role)
                   )}
                 </td>
                 <td>
@@ -181,21 +182,7 @@ const Table = () => {
                         alt="Save"
                         onClick={() => handleCancel(data.id, setEditMode)}
                       />
-                      <img
-                        className="logo"
-                        src={delIcon}
-                        alt="Cancel"
-                        onClick={() =>
-                          handleSave(
-                            data.id,
-                            data.name,
-                            data.email,
-                            data.role,
-                            dataArray,
-                            setDataArray
-                          )
-                        }
-                      />
+                      
                     </>
                   ) : (
                     <>
